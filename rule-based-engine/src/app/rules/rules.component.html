@@ -1,0 +1,98 @@
+<section class="row">
+  <div class="col-md-10 padded">
+    <table class="table table-dark" id="table">
+      <thead>
+        <tr>
+          <th scope="col" style="width:150px">#</th>
+          <th scope="col">Rule name</th>
+          <th scope="col">Campaigns</th>
+          <th scope="col">Rule Schedule</th>
+          <th scope="col">Rule Status </th>
+          <th scope="col" style="width: 150px">Edit</th>
+        </tr>
+      </thead>
+      <tbody id="table-body">
+        <tr *ngFor="let rule of ruleList; let i = index;">
+          <th scope="row">{{i+1}}</th>
+          <td>
+            <a>{{rule.Name}}</a>
+          </td>
+          <td>
+            <div>{{campaignMap[rule.Campaign_Id]}}</div>
+          </td>
+          <td>
+            <div>{{rule.Date_Started}}</div>
+          </td>
+          <td>
+            <div>{{rule.Activated ? "Active" : "Inactive"}}</div>
+          </td>
+          <td>
+            <div>
+              <button class="material-icons btn" type="buttton" data-toggle="modal" data-target="#delete-alert" (click)="editModal(i)">Edit</button>
+              <!-- Modal -->
+              <div class="modal fade" id="delete-alert" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered " role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" style="color :black ;">{{switch? "Create Rule" : "Update Rule" }}</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="padded">
+                      <input type="text" class="form-control " placeholder="Rule Name" name="name" [(ngModel)]="obj.Name">
+                      <div class="padded" style="color:black;">
+                        Schedule
+                        <input type="date" name="bday" [(ngModel)]="obj.date">
+                        <input type="time" name="usr_time" [(ngModel)]="obj.time">
+                      </div>
+                      <div *ngIf="switch">
+                        <span *ngFor="let camp of campaignList" class="btn btn-dark seperated"><input type="checkbox" (change)="onChange(camp,$event)">
+                          {{campaignMap[camp]}}
+                        </span>
+                      </div>
+                      <div style="color:black; margin:10px; font-weight:bolder;">{{obj.campaign}}</div>
+                      <select class="custom-select" id="inputGroupSelect01" [(ngModel)]="obj.Condition_Type">
+                        <option value="condition1">`eCPM` >= $5.00 AND `Impressions` >= 1000000</option>
+                        <option value="condition2">`Spend` >= $1000.00 AND `eCPC` <=  $0.20</option>
+                        <option value="condition3">`Clicks` >= 50000 AND `Installs` <= 100</option>
+                        <option value="condition4">`eCPI` >= $2.00 AND `Installs` >= 100</option>
+                      </select>
+                      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-secondary active">
+                          <input type="radio" name="options"  [(ngModel)]="obj.Notify_Action" value="0.25" [checked]="options=='0.25'"> 15 min
+                        </label>
+                        <label class="btn btn-secondary">
+                          <input type="radio" name="options"  [(ngModel)]="obj.Notify_Action" value="1" [checked]="options=='1'" > 1 hr
+                        </label>
+                        <label class="btn btn-secondary">
+                          <input type="radio" name="options"  [(ngModel)]="obj.Notify_Action" value="24" [checked]="options=='24'"> 1 day
+                        </label>
+                      </div>
+                      <div style="color:black;">
+                        Status: Activated
+                        <input class="form-check-input seperated" type="checkbox" [(ngModel)]="obj.Activated" id="defaultCheck1">
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-primary" (click)="submit()" data-dismiss="modal">Save
+                        changes</button>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+              <!-- modal -->
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <button id="create" class="btn" data-toggle="modal" data-target="#delete-alert" (click)="createModal()">
+      <b> + </b>
+    </button>
+  </div>
+ 
+</section>
+
